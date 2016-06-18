@@ -1,0 +1,61 @@
+swagger: '2.0'
+info:
+  version: "3.0.0"
+  title: AutoCAD.io
+schemes: ['https']
+host: api.autocad.io
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  workitem-id:
+    name: workitem-id
+    in: path
+    description: The workitem identifier
+    type: string
+    required: true
+paths:
+  /WorkItems:
+    get:
+      summary: Gets workitems
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          schema:
+            title: WorkItems
+            type: array
+            items:
+              $ref: '#/definitions/WorkItem'
+    post:
+      summary: Posts a new workitem
+      description: Workitem will be executed asynchronously
+      parameters:
+        - name: workitem
+          in: body
+          description: The workitem JSON you want to post
+          schema:
+            $ref: '#/definitions/WorkItem'
+          required: true
+      responses:
+        200:
+          description: OK
+  /WorkItems/('{workitem-id}'):
+    parameters:
+        - $ref: '#/parameters/workitem-id'
+    get:
+      summary: Gets a workitem
+      responses:
+        200:
+          description: workitem object
+          schema:
+            $ref: '#/definitions/WorkItem'
+definitions:
+  WorkItem:
+    type: object
+    properties:
+      Id:
+        type: string
+      ActivityId:
+        type: string
